@@ -149,9 +149,7 @@ export default {
 
 
 
-    close() {
-      this.$emit("close");
-    },
+  
   },
 };
 </script>

@@ -21,22 +21,18 @@
         </form>
       </div>
       <div @click="onAuthBtnClick" class="header__right right">
-        <a href="#" :class="classes"  class="right__btn btn" @click="$emit('click')"
-         > 
-          {{ getUser ? 'Выйти' : 'Вход' }}
+        <a href="#" :class="classes" class="right__btn btn">
+          {{ getUser ? "Выйти" : "Вход" }}
         </a>
       </div>
     </div>
-    <auth-modal
-      v-if="isAuthModalOpen"
-      @close="isAuthModalOpen = false"
-    />
+    <auth-modal v-if="isAuthModalOpen" @close="isAuthModalOpen = false" />
   </header>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import AuthModal from './AuthModal'
+import { mapGetters, mapActions } from "vuex";
+import AuthModal from "./AuthModal";
 
 export default {
   name: "Header",
@@ -46,35 +42,43 @@ export default {
       userSearch: "",
       isAuthorized: false,
       isAuthModalOpen: false,
-      classes:{
+      classes: {
         success: false,
-        danger: false,
-      }
+        un_success: false,
+      },
     };
   },
-  computed:{
-    ...mapGetters({getUser: 'user/getUser'})
+  computed: {
+    ...mapGetters({ getUser: "user/getUser" }),
   },
   created() {
-    this.setUser(JSON.parse(localStorage.getItem('user')))
+    this.setUser(JSON.parse(localStorage.getItem("user")));
   },
+  mounted() {
+    if (this.getUser) {
+      this.classes.success = "true";
+    }
+  },
+
   methods: {
     ...mapActions({
-      setUser: 'user/setUser',
-      deleteUser: 'user/deleteUser'
+      setUser: "user/setUser",
+      deleteUser: "user/deleteUser",
     }),
     onAuthBtnClick() {
       if (this.getUser) {
-        let c = this.classes
-        c.success = 'true'
-        localStorage.removeItem('user')
-        this.deleteUser()
+        let c = this.classes;
+        c.success = "true";
+        this.classes.un_success = 'false'
+        localStorage.removeItem("user");
+        this.deleteUser();
       } else {
-        this.isAuthModalOpen = false
+        this.classes.un_success = 'true';
+        this.classes.success = "false";
+        this.isAuthModalOpen = true;
       }
-    }
-  }
-
+    },
+  },
 };
 </script>
 
@@ -84,10 +88,16 @@ export default {
 .success {
   background-color: $backgroundColor;
   color: $colorBtn;
-  &:hover{
-     color:$backgroundColor;
+  &:hover {
+    color: $backgroundColor;
   }
-
+}
+.un_success {
+  background-color: $colorBtn;
+  color: $backgroundColor;
+  &:hover {
+    color: $colorBtnHover;
+  }
 }
 
 .header {
@@ -169,7 +179,7 @@ export default {
     font-size: 16px;
     line-height: 19/16 * 100%;
     font-weight: 600;
-  
+
     &:focus {
       outline: 0;
       background: transparent;
@@ -194,7 +204,6 @@ export default {
     }
   }
 }
-
 
 input::-webkit-input-placeholder {
   opacity: 1;
