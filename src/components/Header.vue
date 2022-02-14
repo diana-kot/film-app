@@ -20,13 +20,19 @@
           <button type="submit" class="middle__btn">Найти</button>
         </form>
       </div>
-      <div @click="onAuthBtnClick" class="header__right right">
+
+       
+
+      <div class="header__right right" @click="onAuthBtnClick">
+      
         <a href="#" :class="classes" class="right__btn btn">
           {{ getUser ? "Выйти" : "Вход" }}
         </a>
       </div>
     </div>
-    <auth-modal v-if="isAuthModalOpen" @close="isAuthModalOpen = false" />
+    <auth-modal
+     v-show="isAuthModalOpen"
+     @close="isAuthModalOpen = false" />
   </header>
 </template>
 
@@ -40,16 +46,20 @@ export default {
   data() {
     return {
       userSearch: "",
+      title: "",
       isAuthorized: false,
       isAuthModalOpen: false,
       classes: {
         success: false,
-        un_success: false,
+        right__btn: false,
       },
     };
   },
   computed: {
     ...mapGetters({ getUser: "user/getUser" }),
+    name() {
+      return this.getUser.name;
+    },
   },
   created() {
     this.setUser(JSON.parse(localStorage.getItem("user")));
@@ -57,6 +67,8 @@ export default {
   mounted() {
     if (this.getUser) {
       this.classes.success = "true";
+    } else {
+      this.classes.success = "false";
     }
   },
 
@@ -69,14 +81,25 @@ export default {
       if (this.getUser) {
         let c = this.classes;
         c.success = "true";
-        this.classes.un_success = 'false'
+        this.classes.right__btn = "false";
+        this.isAuthorized = false;
         localStorage.removeItem("user");
         this.deleteUser();
+        
       } else {
-        this.classes.un_success = 'true';
         this.classes.success = "false";
-        this.isAuthModalOpen = true;
+        this.isAuthModalOpen = "true";
+        // this.showUser();
       }
+    },
+    // showUser() {
+    //   if(this.isAuthModalOpen == "true")
+    //     this.isAuthorized = "false";
+    // },
+
+    close() {
+      this.isAuthModalOpen = "false";
+      this.isAuthorized = "true";
     },
   },
 };
@@ -94,7 +117,7 @@ export default {
 }
 .un_success {
   background-color: $colorBtn;
-  color: $backgroundColor;
+  color: $colorBtn;
   &:hover {
     color: $colorBtnHover;
   }

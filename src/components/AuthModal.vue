@@ -1,87 +1,96 @@
 <template>
   <div>
-    <div class="modal-overlay"></div>
+    <transition name="fade" appear>
+      <div
+        class="modal-overlay"></div>
+    
+    </transition>
 
-    <modal
-      name="auth-modal"
-      classes="auth-modal"
-      height="394px"
-      width="304px"
-      :resizable="true"
-      :adaptive="true"
-      @before-close="close"
-    >
-      <form @submit.prevent="submitHandler">
-        <span class="card-title">Вход</span>
-        <div>
-          <input
-            class="input__form"
-            id="name"
-            type="login"
-            placeholder="Логин"
-            v-model.trim="name"
-            :class="{
-              invalid: $v.name.$dirty && !$v.name.required,
-            }"
-          />
-          <small
-            class="helper-text invalid"
-            v-if="$v.name.$dirty && !$v.name.required"
-            >Поле Логин не должно быть пустым</small
-          >
-        </div>
-        <div>
-          <input
-            class="input__form"
-            id="password"
-            type="password"
-            placeholder="Пароль"
-            v-model.trim="password"
-            :class="{
-              invalid:
-                ($v.password.$dirty && !$v.password.required) ||
-                ($v.password.$dirty && !$v.password.minLength),
-            }"
-          />
+    
+      <modal
+        name="auth-modal"
+        classes="auth-modal"
+        height="394px"
+        width="304px"
+        :resizable="true"
+        :adaptive="true"
+        :clickToClose="false"
+        :overlay-fade="false"
+        @before-close="close"
+      >
+        <form @submit.prevent="submitHandler">
+          <span class="card-title">Вход</span>
+          <div class="text__div">
+            <input
+              class="input__form"
+              id="name"
+              type="login"
+              placeholder="Логин"
+              v-model.trim="name"
+              :class="{
+                invalid: $v.name.$dirty && !$v.name.required,
+              }"
+            />
+            <small
+              class="helper-text invalid"
+              v-if="$v.name.$dirty && !$v.name.required"
+              >Поле Логин не должно быть пустым</small
+            >
+          </div>
+          <div class="text__div">
+            <input
+              class="input__form"
+              id="password"
+              type="password"
+              placeholder="Пароль"
+              v-model.trim="password"
+              :class="{
+                invalid:
+                  ($v.password.$dirty && !$v.password.required) ||
+                  ($v.password.$dirty && !$v.password.minLength),
+              }"
+            />
 
-          <small
-            class="helper-text invalid"
-            v-if="$v.password.$dirty && !$v.password.required"
-          >
-            Введите пароль
-          </small>
-          <small
-            class="helper-text invalid"
-            v-else-if="$v.password.$dirty && !$v.password.minLength"
-          >
-            Пароль должен быть {{ $v.password.$params.minLength.min }} символов.
-            Сейчас он {{ password.length }}
-          </small>
-        </div>
+            <small
+              class="helper-text invalid"
+              v-if="$v.password.$dirty && !$v.password.required"
+            >
+              Введите пароль
+            </small>
+            <small
+              class="helper-text invalid"
+              v-else-if="$v.password.$dirty && !$v.password.minLength"
+            >
+              Пароль должен быть
+              {{ $v.password.$params.minLength.min }} символов. Сейчас он
+              {{ password.length }}
+            </small>
+          </div>
 
-        <div class="check">
-          <input id="cbx1" type="checkbox" />
-          <label class="cbx" for="cbx1">
-            <div class="flip">
-              <div class="front"></div>
-              <div class="back">
-                <svg width="16" height="14" viewBox="0 0 16 14">
-                  <path d="M2 8.5L6 12.5L14 1.5"></path>
-                </svg>
+          <div class="check">
+            <input id="cbx1" type="checkbox" />
+            <label class="cbx" for="cbx1">
+              <div class="flip">
+                <div class="front"></div>
+                <div class="back">
+                  <svg width="16" height="14" viewBox="0 0 16 14">
+                    <path d="M2 8.5L6 12.5L14 1.5"></path>
+                  </svg>
+                </div>
               </div>
-            </div>
-          </label>
-          <span class="txt__form">Запомнить</span>
-        </div>
-        <button
-          type="submit"
-          class="btn form__button"
-          @click="mode = isSignInForm ? 'signUp' : 'signIn'"
-        >
-          Войти
-        </button>
-      </form>
-    </modal>
+            </label>
+            <span class="txt__form">Запомнить</span>
+          </div>
+          <button
+            type="submit"
+            class="btn form__button"
+            @click="$emit('close')"
+          >
+            Войти
+          </button>
+        </form>
+      </modal>
+ 
   </div>
 </template>
 
@@ -91,6 +100,7 @@ import { mapActions } from "vuex";
 export default {
   name: "auth-modal",
   data: () => ({
+    isAuthModalOpen: true,
     name: "",
     password: "",
     agree: false,
@@ -105,22 +115,29 @@ export default {
   },
   computed: {
     isSignInForm() {
-      return this.mode === 'signIn'
-    }
+      return this.mode === "signIn";
+    },
   },
 
   methods: {
-    ...mapActions(['user/setUser']),
+    ...mapActions(["user/setUser"]),
 
-     changeUserState() {
-      if (this.auth) {
-        localStorage.removeItem('auth')
-        this.$router.push({ name: 'main'})
-      } else {
-        localStorage.setItem('auth', true)
-        this.auth = true
-      }
+    //  changeUserState() {
+    //   if (this.auth) {
+    //     localStorage.removeItem('auth')
+    //     this.$router.push({ name: 'main'})
+    //   } else {
+    //     localStorage.setItem('auth', true)
+    //     this.auth = true
+    //   }
+    // },
+    close() {
+      this.$emit("close");
+     
     },
+    // showUser(){
+    //   this.$emit("showUser");
+    // },
     async submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch();
@@ -134,22 +151,14 @@ export default {
       try {
         // await this.$store.dispatch("login", formData);
         // console.log(formData);
-        localStorage.setItem('user', JSON.stringify(formData))
-        await this.$store.dispatch('user/setUser', formData )
+        localStorage.setItem("user", JSON.stringify(formData));
+        await this.$store.dispatch("user/setUser", formData);
         this.$emit("close");
       } catch (e) {
         console.log(e);
       }
     },
-      signIn(){
-        
-      },
-
-
-
-
-
-  
+    signIn() {},
   },
 };
 </script>
@@ -175,8 +184,16 @@ export default {
       transition: all 0.5s ease 0s;
     }
 
+    .text__div {
+      position: relative;
+    }
+
     .helper-text {
       color: $colorBtnHover;
+      font-size: 12px;
+      position: absolute;
+      top: 50%;
+      left: 0;
     }
     .card-title {
       font-weight: 500;
@@ -258,26 +275,40 @@ export default {
       align-items: center;
       margin-left: 12px;
     }
-  }
-}
-.v--modal-overlay {
-  background: red;
-}
-.v--modal-overlay[data-modal="auth-modal"] {
-  background: red;
-}
+    
 
-.modal-overlay {
-  content: "";
-  position: absolute;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 998;
-  background: $colorDark;
-  opacity: 0.6;
-  cursor: pointer;
+    
+  }
+
+  /* ---------------------------------- */
+    .fade-enter-active,
+    .fade-leave-active {
+      transition: opacity 0.4s linear;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+      opacity: 0;
+      z-index: 0;
+    }
+
+    .pop-enter-active,
+    .pop-leave-active {
+      transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1),
+        opacity 0.4s linear;
+    }
+  .modal-overlay {
+      content: "";
+      position: absolute;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 998;
+      background: $colorDark;
+      opacity: 0,6;
+      cursor: pointer;
+    }
 }
 </style>

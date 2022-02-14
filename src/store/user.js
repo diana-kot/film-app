@@ -1,7 +1,7 @@
 export default {
   namespaced: true,
   state: {
-    user: null,
+    user: '',
   },
   getters: {
     getUser(state) {
@@ -13,7 +13,7 @@ export default {
       state.user = payload;
     },
     DELETE_USER(state) {
-      state.user = null;
+      state.user = '';
     },
   },
   actions: {
