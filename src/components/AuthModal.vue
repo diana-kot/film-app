@@ -16,7 +16,9 @@
         :adaptive="true"
         :clickToClose="false"
         :overlay-fade="false"
-        @before-close="close"
+        @closed="close"
+        
+     
       >
         <form @submit.prevent="submitHandler">
           <span class="card-title">Вход</span>
@@ -24,9 +26,10 @@
             <input
               class="input__form"
               id="name"
-              type="login"
+              type="text"
               placeholder="Логин"
               v-model.trim="name"
+              ref="username"
               :class="{
                 invalid: $v.name.$dirty && !$v.name.required,
               }"
@@ -84,7 +87,6 @@
           <button
             type="submit"
             class="btn form__button"
-            @click="$emit('close')"
           >
             Войти
           </button>
@@ -131,10 +133,10 @@ export default {
     //     this.auth = true
     //   }
     // },
-    close() {
-      this.$emit("close");
-     
-    },
+    // close() {
+    //   console.log('Colose modal');
+    //   this.$emit("close");    
+    // },
     // showUser(){
     //   this.$emit("showUser");
     // },
@@ -154,7 +156,9 @@ export default {
         localStorage.setItem("user", JSON.stringify(formData));
         await this.$store.dispatch("user/setUser", formData);
         this.$emit("close");
-      } catch (e) {
+
+      } catch (e) 
+      {
         console.log(e);
       }
     },

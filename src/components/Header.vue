@@ -20,19 +20,32 @@
           <button type="submit" class="middle__btn">Найти</button>
         </form>
       </div>
+      <div class="wrapper__name">
+        <div class="user__name" v-show="isAuthorized">
+          <p>{{ getUser ? this.name : "" }}</p>
+        </div>
+        <!-- <div class="user__name" v-show="isAuthorized">
+          <input
+          :value="getUser"
+          type="text"
+          @input="onChangeInput($event)"
+  
+          />
+        </div>  -->
+        
 
-       
 
-      <div class="header__right right" @click="onAuthBtnClick">
-      
-        <a href="#" :class="classes" class="right__btn btn">
-          {{ getUser ? "Выйти" : "Вход" }}
-        </a>
+
+        <div class="header__right right" @click="onAuthBtnClick">
+          <a href="#" :class="classes" class="right__btn btn">
+            {{ getUser ? "Выйти" : "Вход" }}
+          </a>
+        </div>
       </div>
     </div>
-    <auth-modal
-     v-show="isAuthModalOpen"
-     @close="isAuthModalOpen = false" />
+    <auth-modal 
+    v-show="isAuthModalOpen" 
+    @close="closeModal" />
   </header>
 </template>
 
@@ -45,8 +58,8 @@ export default {
   components: { AuthModal },
   data() {
     return {
+      user: 'name',
       userSearch: "",
-      title: "",
       isAuthorized: false,
       isAuthModalOpen: false,
       classes: {
@@ -67,8 +80,10 @@ export default {
   mounted() {
     if (this.getUser) {
       this.classes.success = "true";
+      this.isAuthorized = "true";
     } else {
       this.classes.success = "false";
+      this.isAuthorized = "false";
     }
   },
 
@@ -85,21 +100,27 @@ export default {
         this.isAuthorized = false;
         localStorage.removeItem("user");
         this.deleteUser();
-        
+        // this.isAuthModalOpen = "false";
       } else {
         this.classes.success = "false";
         this.isAuthModalOpen = "true";
         // this.showUser();
       }
     },
+    onChangeInput(event){
+      console.log(event)
+      this.user = event.target.value
+    },
     // showUser() {
     //   if(this.isAuthModalOpen == "true")
     //     this.isAuthorized = "false";
     // },
 
-    close() {
-      this.isAuthModalOpen = "false";
-      this.isAuthorized = "true";
+    closeModal() {
+      this.isAuthModalOpen = false;
+      this.isAuthorized = true;
+      console.log("Закрытие модального окна");
+      
     },
   },
 };
@@ -111,6 +132,7 @@ export default {
 .success {
   background-color: $backgroundColor;
   color: $colorBtn;
+
   &:hover {
     color: $backgroundColor;
   }
@@ -118,6 +140,7 @@ export default {
 .un_success {
   background-color: $colorBtn;
   color: $colorBtn;
+  padding: 2px;
   &:hover {
     color: $colorBtnHover;
   }
@@ -259,5 +282,33 @@ input:focus:-moz-placeholder {
 input:focus:-ms-input-placeholder {
   opacity: 0;
   transition: opacity 0.3s ease;
+}
+
+.user__name {
+  font-size: 16px;
+  width: 114px;
+  top: 19px;
+  font-weight: 500;
+  position: absolute;
+  right: 196px;
+  top: 10px;
+  border: 1px solid grey;
+
+}
+
+.wrapper__name {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  position: relative;
+}
+
+.user {
+  font-size: 16px;
+  width: 114px;
+  top: 19px;
+  font-weight: 500;
+  color: aqua;
+  border: 1px solid red;
 }
 </style>
