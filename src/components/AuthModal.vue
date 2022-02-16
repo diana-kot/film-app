@@ -1,103 +1,91 @@
 <template>
   <div>
     <transition name="fade" appear>
-      <div
-        class="modal-overlay"></div>
-    
+      <div class="modal-overlay"></div>
     </transition>
 
-    
-      <modal
-        name="auth-modal"
-        classes="auth-modal"
-        height="394px"
-        width="304px"
-        :resizable="true"
-        :adaptive="true"
-        :clickToClose="false"
-        :overlay-fade="false"
-        @closed="close"
-        
-     
-      >
-        <form @submit.prevent="submitHandler">
-          <span class="card-title">Вход</span>
-          <div class="text__div">
-            <input
-              class="input__form"
-              id="name"
-              type="text"
-              placeholder="Логин"
-              v-model.trim="name"
-              ref="username"
-              :class="{
-                invalid: $v.name.$dirty && !$v.name.required,
-              }"
-            />
-            <small
-              class="helper-text invalid"
-              v-if="$v.name.$dirty && !$v.name.required"
-              >Поле Логин не должно быть пустым</small
-            >
-          </div>
-          <div class="text__div">
-            <input
-              class="input__form"
-              id="password"
-              type="password"
-              placeholder="Пароль"
-              v-model.trim="password"
-              :class="{
-                invalid:
-                  ($v.password.$dirty && !$v.password.required) ||
-                  ($v.password.$dirty && !$v.password.minLength),
-              }"
-            />
-
-            <small
-              class="helper-text invalid"
-              v-if="$v.password.$dirty && !$v.password.required"
-            >
-              Введите пароль
-            </small>
-            <small
-              class="helper-text invalid"
-              v-else-if="$v.password.$dirty && !$v.password.minLength"
-            >
-              Пароль должен быть
-              {{ $v.password.$params.minLength.min }} символов. Сейчас он
-              {{ password.length }}
-            </small>
-          </div>
-
-          <div class="check">
-            <input id="cbx1" type="checkbox" />
-            <label class="cbx" for="cbx1">
-              <div class="flip">
-                <div class="front"></div>
-                <div class="back">
-                  <svg width="16" height="14" viewBox="0 0 16 14">
-                    <path d="M2 8.5L6 12.5L14 1.5"></path>
-                  </svg>
-                </div>
-              </div>
-            </label>
-            <span class="txt__form">Запомнить</span>
-          </div>
-          <button
-            type="submit"
-            class="btn form__button"
+    <modal
+      name="auth-modal"
+      classes="auth-modal"
+      height="394px"
+      width="304px"
+      :resizable="true"
+      :adaptive="true"
+      :clickToClose="false"
+      :overlay-fade="false"
+    >
+      <form @submit.prevent="submitHandler">
+        <span class="card-title">Вход</span>
+        <div class="text__div">
+          <input
+            class="input__form"
+            id="name"
+            type="text"
+            placeholder="Логин"
+            v-model.trim="name"
+            :class="{
+              invalid: $v.name.$dirty && !$v.name.required,
+            }"
+          />
+          <small
+            class="helper-text invalid"
+            v-if="$v.name.$dirty && !$v.name.required"
+            >Поле Логин не должно быть пустым</small
           >
-            Войти
-          </button>
-        </form>
-      </modal>
- 
+        </div>
+        <div class="text__div">
+          <input
+            class="input__form"
+            id="password"
+            type="password"
+            placeholder="Пароль"
+            v-model.trim="password"
+            :class="{
+              invalid:
+                ($v.password.$dirty && !$v.password.required) ||
+                ($v.password.$dirty && !$v.password.minLength),
+            }"
+          />
+
+          <small
+            class="helper-text invalid"
+            v-if="$v.password.$dirty && !$v.password.required"
+          >
+            Введите пароль
+          </small>
+          <small
+            class="helper-text invalid"
+            v-else-if="$v.password.$dirty && !$v.password.minLength"
+          >
+            Пароль должен быть
+            {{ $v.password.$params.minLength.min }} символов. Сейчас он
+            {{ password.length }}
+          </small>
+        </div>
+
+        <div class="check">
+          <input id="cbx1" type="checkbox" v-model="checked" />
+          <label class="cbx" for="cbx1">
+            <div class="flip">
+              <div class="front"></div>
+              <div class="back">
+                <svg width="16" height="14" viewBox="0 0 16 14">
+                  <path d="M2 8.5L6 12.5L14 1.5"></path>
+                </svg>
+              </div>
+            </div>
+          </label>
+          <span class="txt__form">Запомнить</span>
+        </div>
+        <button type="submit" class="btn form__button">Войти</button>
+      </form>
+    </modal>
   </div>
 </template>
 
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
+
 import { mapActions } from "vuex";
 export default {
   name: "auth-modal",
@@ -107,6 +95,7 @@ export default {
     password: "",
     agree: false,
     mode: "signIn",
+    checked: false,
   }),
   validations: {
     name: { required },
@@ -114,12 +103,25 @@ export default {
   },
   mounted() {
     this.$modal.show("auth-modal");
+    const saved = localStorage.getItem("user");
+    const initialValue = JSON.parse(saved);
+    this.checked = initialValue.checked;
+    if (this.checked === true) {
+      this.name = initialValue.name;
+      this.password = initialValue.password;
+    }
   },
-  computed: {
-    isSignInForm() {
-      return this.mode === "signIn";
-    },
-  },
+
+  // computed: {
+  //   ...mapGetters({ getUser: "user/getUser" }),
+
+  //   userFromState() {
+  //     return this.getUser;
+  //   },
+  //   // isSignInForm() {
+  //   //   return this.mode === "signIn";
+  //   // },
+  // },
 
   methods: {
     ...mapActions(["user/setUser"]),
@@ -135,7 +137,7 @@ export default {
     // },
     // close() {
     //   console.log('Colose modal');
-    //   this.$emit("close");    
+    //   this.$emit("close");
     // },
     // showUser(){
     //   this.$emit("showUser");
@@ -145,20 +147,23 @@ export default {
         this.$v.$touch();
         return;
       }
-      const formData = {
+      const getUser = {
         name: this.name,
         password: this.password,
+        checked: this.checked,
+        isSignIn: true
       };
 
       try {
-        // await this.$store.dispatch("login", formData);
-        // console.log(formData);
-        localStorage.setItem("user", JSON.stringify(formData));
-        await this.$store.dispatch("user/setUser", formData);
+        await this.$store.dispatch("user/setUser", getUser);
+        localStorage.setItem("user", JSON.stringify(getUser));
+        // if (localStorage.getItem("checked") === "true") {
+        //   const saved = localStorage.getItem("user");
+        //   const initialValue = JSON.parse(saved);
+        //   return initialValue || "";
+        // }
         this.$emit("close");
-
-      } catch (e) 
-      {
+      } catch (e) {
         console.log(e);
       }
     },
@@ -279,40 +284,36 @@ export default {
       align-items: center;
       margin-left: 12px;
     }
-    
-
-    
   }
 
   /* ---------------------------------- */
-    .fade-enter-active,
-    .fade-leave-active {
-      transition: opacity 0.4s linear;
-    }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.4s linear;
+  }
 
-    .fade-enter,
-    .fade-leave-to {
-      opacity: 0;
-      z-index: 0;
-    }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+    z-index: 0;
+  }
 
-    .pop-enter-active,
-    .pop-leave-active {
-      transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1),
-        opacity 0.4s linear;
-    }
+  .pop-enter-active,
+  .pop-leave-active {
+    transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
+  }
   .modal-overlay {
-      content: "";
-      position: absolute;
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 998;
-      background: $colorDark;
-      opacity: 0,6;
-      cursor: pointer;
-    }
+    content: "";
+    position: absolute;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 998;
+    background: $colorDark;
+    opacity: 0, 6;
+    cursor: pointer;
+  }
 }
 </style>

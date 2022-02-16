@@ -21,20 +21,12 @@
         </form>
       </div>
       <div class="wrapper__name">
-        <div class="user__name" v-show="isAuthorized">
-          <p>{{ getUser ? this.name : "" }}</p>
-        </div>
         <!-- <div class="user__name" v-show="isAuthorized">
-          <input
-          :value="getUser"
-          type="text"
-          @input="onChangeInput($event)"
-  
-          />
-        </div>  -->
-        
-
-
+          <p>{{ getUser ? this.name : "" }}</p>
+        </div> -->
+        <div class="user__name" v-show="isAuthorized">
+          <input :value="name" type="text" @input="onChangeName($event)" />
+        </div>
 
         <div class="header__right right" @click="onAuthBtnClick">
           <a href="#" :class="classes" class="right__btn btn">
@@ -43,9 +35,7 @@
         </div>
       </div>
     </div>
-    <auth-modal 
-    v-show="isAuthModalOpen" 
-    @close="closeModal" />
+    <auth-modal v-show="isAuthModalOpen" @close="closeModal" />
   </header>
 </template>
 
@@ -58,7 +48,6 @@ export default {
   components: { AuthModal },
   data() {
     return {
-      user: 'name',
       userSearch: "",
       isAuthorized: false,
       isAuthModalOpen: false,
@@ -71,35 +60,46 @@ export default {
   computed: {
     ...mapGetters({ getUser: "user/getUser" }),
     name() {
-      return this.getUser.name;
+      localStorage.setItem("userNew", JSON.stringify(this.getUser));
+      console.log('computed')
+      return this.getUser ? this.getUser.name : "";
     },
   },
   created() {
-    this.setUser(JSON.parse(localStorage.getItem("user")));
+    this.setUser(JSON.parse(localStorage.getItem("userNew")));
+    this.getUser();
   },
   mounted() {
     if (this.getUser) {
+      console.log("user есть");
       this.classes.success = "true";
-      this.isAuthorized = "true";
-    } else {
-      this.classes.success = "false";
       this.isAuthorized = "false";
+    } else {
+      this.isAuthorized = "true";
+      this.classes.right__btn = "true";
+      console.log("user нет");
     }
+
+    const strName = localStorage.getItem("userNew");
+    const parsName = JSON.parse(strName);
+    this.getUser.name = parsName.name;
   },
 
   methods: {
     ...mapActions({
       setUser: "user/setUser",
       deleteUser: "user/deleteUser",
+      updateUser: "user/updateUser",
     }),
     onAuthBtnClick() {
       if (this.getUser) {
         let c = this.classes;
         c.success = "true";
         this.classes.right__btn = "false";
-        this.isAuthorized = false;
-        localStorage.removeItem("user");
         this.deleteUser();
+        this.isAuthorized = false;
+        localStorage.removeItem("userNew");
+
         // this.isAuthModalOpen = "false";
       } else {
         this.classes.success = "false";
@@ -107,10 +107,10 @@ export default {
         // this.showUser();
       }
     },
-    onChangeInput(event){
-      console.log(event)
-      this.user = event.target.value
+    onChangeName(event) {
+      this.getUser.name = event.target.value;
     },
+
     // showUser() {
     //   if(this.isAuthModalOpen == "true")
     //     this.isAuthorized = "false";
@@ -119,8 +119,6 @@ export default {
     closeModal() {
       this.isAuthModalOpen = false;
       this.isAuthorized = true;
-      console.log("Закрытие модального окна");
-      
     },
   },
 };
@@ -293,7 +291,6 @@ input:focus:-ms-input-placeholder {
   right: 196px;
   top: 10px;
   border: 1px solid grey;
-
 }
 
 .wrapper__name {
