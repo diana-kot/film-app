@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap");
 
-@import "./vars.scss";
+
+
+
+
 
 .wrapper {
   min-height: 100%;
@@ -53,3 +56,9 @@ body {
     background-color: $colorBtnHover;
   }
 }
+
+
+@import "./vars.scss";
+@import "./mob1023.scss";
+@import "./mob767.scss";
+

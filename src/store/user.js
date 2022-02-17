@@ -2,17 +2,24 @@ export default {
   namespaced: true,
   state: {
     user: null,
+    signIn:false
   },
   getters: {
     getUser(state) {
       return state.user;
     },
+    getSignIn(state) {
+      return state.signIn;
+    },
   },
   mutations: {
+    SET_SIGN(state, payload) {
+      state.signIn = payload;
+    },
     SET_USER(state, payload) {
       state.user = payload;
 
-      localStorage.setItem('userNew', JSON.stringify(state.user))
+      // localStorage.setItem('user', JSON.stringify(state.user))
     },
     DELETE_USER(state) {
       state.user = null;
@@ -27,6 +34,9 @@ export default {
     }
   },
   actions: {
+    setSign({ commit }, payload) {
+      commit("SET_SIGN", payload);
+    },
     setUser({ commit }, payload) {
       commit("SET_USER", payload);
     },

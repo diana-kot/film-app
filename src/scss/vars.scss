@@ -1,17 +1,6 @@
-// $colorBtn: rgb(163, 20, 20);
-// $backgroundColor: rgba(255, 255, 255, 0.918);
-// $backgroundColorFooter: white;
-// $backgroundColorMain: Gainsboro;
-// $minWidth: 320px;
-// $maxWidth: 1152;
-// $maxWidthContainer: 856;
-// $md1: $maxWidthContainer + 12;
-// $md2: 991.98;
-// $md3: 767.98;
-// $md4: 479.98;
-
 $colorDark: #333333;
-$colorScrol: #BDBDBD;
+$colorScrol: #E5E5E5;
+$colorScrolDip: #BDBDBD;
 
 
 $colorGray: #828282;
@@ -23,6 +12,8 @@ $colorBtnHover: #cc221b;
 $colorLink: #1f4766;
 
 $widthSite: 1140px;
+$widthSiteSml: 736px;
 $maxWidth: 1180px;
+$maxWidthChannel: 1196px;
 $gapGrid: 20px;
 $contentCol4: ($widthSite - 2 * $gapGrid) / 3;

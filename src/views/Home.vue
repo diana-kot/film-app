@@ -1,5 +1,5 @@
 <template>
-  <div class="_container">
+  <div class="_container _containerModiv">
     <tabs
       :tabs="tabs"
       :currentTab="currentTab"
@@ -109,5 +109,33 @@ export default {
 
 .content {
   margin-top: 32px;
+}
+._containerModiv {
+  padding-left: calc(50% - #{$maxWidthChannel / 2});
+  padding-right: calc(50% - #{$maxWidthChannel / 2});
+}
+
+@media (max-width: 1023px) {
+  ._container {
+    padding-left: calc(50% - #{$widthSiteSml / 2});
+    padding-right: calc(50% - #{$widthSiteSml / 2});
+  }
+}
+
+@media (max-width: 767px) {
+  .default-tabs__item {
+    font-size: 20px;
+  }
+
+  ._container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (max-width: 425px) {
+  .default-tabs {
+    margin-top: 28px;
+  }
 }
 </style>

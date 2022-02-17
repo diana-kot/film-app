@@ -24,6 +24,7 @@ export default {
           attr1: [
             {
               attr2: "Первый канал",
+             
             },
 
             {
@@ -84,7 +85,27 @@ export default {
           img: "..//channel/fourth.jpg",
           attr1: [
             {
-              attr2: "AMEDIA PREMIUMК",
+              attr2: "AMEDIA PREMIUM",
+            },
+            {
+              attr2: "13:00",
+              attr3: ["Клиент всегда мёртв"],
+            },
+            {
+              attr2: "14:00",
+              attr3: ["Голодные игры: Сойка-пересмешница. Часть I"],
+            },
+            {
+              attr2: "15:00",
+              attr3: ["Секс в большом городе"],
+            },
+          ],
+        },
+        {
+          img: "..//channel/fourth.jpg",
+          attr1: [
+            {
+              attr2: "AMEDIA PREMIUM",
             },
             {
               attr2: "13:00",

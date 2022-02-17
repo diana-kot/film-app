@@ -24,9 +24,12 @@ export default {
 </script>
 
 <style lang="scss">
+
 @import "./scss/null.scss";
 @import "./scss/vars.scss";
+
 @import "./scss/style.scss";
+
 
 
 

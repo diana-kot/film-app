@@ -5,7 +5,7 @@
       <div class="item__txt txt-modif">
         <img :src="genre.img_icon" :alt="genre.title" class="item-img-icon" />
       </div>
-      <p class="item__title title-modif">{{ genre.title }}</p>
+      <div class="item__title title-modif">{{ genre.title }}</div>
     </a>
   </div>
 </template>
@@ -25,23 +25,32 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap");
 
 .title-modif {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   color: $backgroundColor;
   top: 30%;
-  position: absolute;
-  top: 80%;
-  left: 50%;
-  z-index: 1;
-  transform: translate(-50%, -50%);
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .item {
   position: relative;
+  max-width: 280px;
 }
 .txt-modif {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 1;
-  transform: translate(-50%, -50%);
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  object-fit: cover;
 }
 .genres__item:hover {
   filter: saturate(190%);

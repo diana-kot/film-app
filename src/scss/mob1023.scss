@@ -1,0 +1,15 @@
+@import "./vars.scss";
+
+@media (max-width: 1023px) {
+    ._container {
+        padding-left: calc(50% - #{$widthSiteSml / 2});
+        padding-right: calc(50% - #{$widthSiteSml / 2});
+    }
+
+    .genres__items {
+        justify-items: center;
+    }
+
+}
+
+

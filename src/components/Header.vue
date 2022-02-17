@@ -1,6 +1,6 @@
 <template>
-  <header class="header">
-    <div class="header__container _container">
+  <header class="header _container">
+    <div class="header__container">
       <div class="header__left left">
         <router-link :to="{ name: 'home' }" class="left__link">
           <div class="left__logo">
@@ -10,7 +10,12 @@
         </router-link>
       </div>
       <div class="header__middle middle">
-        <form action="#" method="get" class="middle__form">
+        <form
+          action="#"
+          method="get"
+          class="middle__form"
+          :class="{ active: isActive }"
+        >
           <input
             placeholder="Поиск..."
             type="search"
@@ -21,11 +26,13 @@
         </form>
       </div>
       <div class="wrapper__name">
-        <!-- <div class="user__name" v-show="isAuthorized">
-          <p>{{ getUser ? this.name : "" }}</p>
-        </div> -->
         <div class="user__name" v-show="isAuthorized">
-          <input :value="name" type="text" @input="onChangeName($event)" />
+          <input
+            class="input__name"
+            :value="name"
+            type="text"
+            @input="onChangeName($event)"
+          />
         </div>
 
         <div class="header__right right" @click="onAuthBtnClick">
@@ -48,6 +55,7 @@ export default {
   components: { AuthModal },
   data() {
     return {
+      isActive: false,
       userSearch: "",
       isAuthorized: false,
       isAuthModalOpen: false,
@@ -58,54 +66,63 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ getUser: "user/getUser" }),
+    ...mapGetters({ getUser: "user/getUser", getSignIn: "user/getSignIn" }),
     name() {
-      localStorage.setItem("userNew", JSON.stringify(this.getUser));
-      console.log('computed')
+      localStorage.getItem("user", JSON.stringify(this.getUser));
+      console.log("computed");
       return this.getUser ? this.getUser.name : "";
     },
   },
   created() {
-    this.setUser(JSON.parse(localStorage.getItem("userNew")));
+    // this.setSign(JSON.parse(localStorage.getItem("signIn")));
+    this.getSign();
+    this.setUser(JSON.parse(localStorage.getItem("user")));
     this.getUser();
   },
+
   mounted() {
-    if (this.getUser) {
+    if (this.getUser && this.getSignIn) {
       console.log("user есть");
       this.classes.success = "true";
       this.isAuthorized = "false";
     } else {
       this.isAuthorized = "true";
       this.classes.right__btn = "true";
+      this.classes.success = "false";
       console.log("user нет");
     }
 
-    const strName = localStorage.getItem("userNew");
-    const parsName = JSON.parse(strName);
-    this.getUser.name = parsName.name;
+    // const strName = localStorage.getItem("user");
+    // const parsName = JSON.parse(strName);
+    // this.getUser.name = parsName.name;
   },
 
   methods: {
     ...mapActions({
       setUser: "user/setUser",
+      setSign: "user/setSign",
       deleteUser: "user/deleteUser",
       updateUser: "user/updateUser",
     }),
     onAuthBtnClick() {
       if (this.getUser) {
-        let c = this.classes;
-        c.success = "true";
+        this.classes.success = "true";
         this.classes.right__btn = "false";
         this.deleteUser();
         this.isAuthorized = false;
-        localStorage.removeItem("userNew");
+        this.getSignIn = false;
+
+        // localStorage.removeItem("userNew");
 
         // this.isAuthModalOpen = "false";
       } else {
         this.classes.success = "false";
         this.isAuthModalOpen = "true";
+        this.getSignIn = true;
+        localStorage.getItem("user", JSON.stringify(this.setUser));
         // this.showUser();
       }
+      localStorage.setItem("signIn", JSON.stringify(this.setSign));
     },
     onChangeName(event) {
       this.getUser.name = event.target.value;
@@ -125,11 +142,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../scss/mob1023.scss";
+@import "../scss/mob1023.scss";
 @import "../scss/vars.scss";
+@import "../scss/style.scss";
 
 .success {
   background-color: $backgroundColor;
   color: $colorBtn;
+  padding: 0;
 
   &:hover {
     color: $backgroundColor;
@@ -152,7 +173,6 @@ export default {
 
   &__container {
     display: flex;
-    flex: 1 1 auto;
     min-height: 40px;
     align-items: center;
     justify-content: space-between;
@@ -163,11 +183,13 @@ export default {
   &__left {
     display: flex;
     align-items: center;
+    gap: 208px;
   }
 
   // .header__middle
 
   &__middle {
+    width: 402px;
   }
 
   // .header__right
@@ -202,13 +224,15 @@ export default {
   // .middle__form
 
   &__form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 400px;
     height: 25px;
     color: $colorGray;
     background: $backgroundColor;
     display: flex;
     gap: 32px;
-    margin-right: 90px;
   }
 
   // .middle__input
@@ -223,6 +247,7 @@ export default {
     font-size: 16px;
     line-height: 19/16 * 100%;
     font-weight: 600;
+    transition: 0.4s;
 
     &:focus {
       outline: 0;
@@ -285,19 +310,24 @@ input:focus:-ms-input-placeholder {
 .user__name {
   font-size: 16px;
   width: 114px;
-  top: 19px;
+  // top: 19px;
   font-weight: 500;
-  position: absolute;
-  right: 196px;
-  top: 10px;
+  // position: absolute;
+  // right: 196px;
+  // top: 10px;
   border: 1px solid grey;
+  margin-right: 16px;
 }
 
 .wrapper__name {
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
   position: relative;
+}
+
+.input__name {
+  width: 114px;
+  display: flex;
 }
 
 .user {
@@ -307,5 +337,109 @@ input:focus:-ms-input-placeholder {
   font-weight: 500;
   color: aqua;
   border: 1px solid red;
+}
+
+@media (max-width: 1023px) {
+  ._container {
+    padding-left: calc(50% - #{$widthSiteSml / 2});
+    padding-right: calc(50% - #{$widthSiteSml / 2});
+  }
+
+  .middle__input {
+    width: 220px;
+  }
+
+  .middle__form {
+    justify-content: start;
+    gap: 12px;
+  }
+
+  .header__left {
+    margin-right: 20px;
+  }
+
+  .wrapper__name {
+    flex-flow: column-reverse;
+  }
+
+  // .header__middle {
+  //   width: 10px;
+  // }
+
+  // .middle__input {
+  //   width: 200px;
+  // }
+  // .header__left {
+  //   margin-right: 160px;
+  // }
+
+  .header__container {
+    justify-content: start;
+  }
+
+  // .middle__form {
+  //   width: 0px;
+  //   position: relative;
+  // }
+
+  // .middle__input {
+  //   border-bottom: none;
+  //   width: 0px;
+  //   padding: 0px;
+  //   transition: all 0.3s ease;
+  // }
+
+  // .active {
+  //   width: 320px;
+  //   padding-left: 10px;
+  //   padding-right: 10px;
+  //   border-bottom: 1px solid #333333;
+  //   outline: none;
+  //   color: $colorDark;
+  //   font-size: 16px;
+  //   line-height: 19/16 * 100%;
+  //   font-weight: 600;
+  //   transition: 0.4s;
+  // }
+
+  // .middle__btn {
+  //   position: absolute;
+  //   left: 45px;
+  // }
+}
+
+@media (max-width: 767px) {
+  ._container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .header__middle {
+    width: 9px;
+  }
+
+  .middle__form {
+    width: 0px;
+  }
+
+  .middle__input {
+    width: 100px;
+  }
+}
+
+@media (max-width: 425px) {
+  .header__middle {
+    position: absolute;
+    top: 12%;
+    left: 20%;
+  }
+
+  .middle__form {
+    width: 0px;
+  }
+
+  .middle__input {
+    width: 200px;
+  }
 }
 </style>

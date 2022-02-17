@@ -1,5 +1,5 @@
 <template>
-  <div class="films-page container">
+  <div class="films-page _container">
     <p class="films__title title-large">Новинки</p>
     <MoviesList :movies="movies" />
     <p class="films__titleToo title-large">Жанры</p>
@@ -29,6 +29,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+@import "../scss/vars.scss";
+@import "../scss/style.scss";
 .films__title {
   position: relative;
   margin-left: 29px;

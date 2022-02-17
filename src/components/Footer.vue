@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer center">
+  <footer class="footer">
     <div class="footer__container _container">
       <div class="footer__left">
         <img alt="Vue logo" src="../assets/Vector.svg" />
@@ -63,5 +63,11 @@ export default {
       filter: saturate(190%);
     }
   }
+
+  @media (max-width: 767px) {
+  .footer__right {
+    font-size: 14px;
+  }
+}
 }
 </style>

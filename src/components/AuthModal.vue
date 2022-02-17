@@ -65,7 +65,8 @@
 
         <div class="check">
           <input id="cbx1" type="checkbox" v-model="checked" />
-          <label class="cbx" for="cbx1">
+          <label for="cbx1" class="cbx">
+            <span class="txt__form">Запомнить</span>
             <div class="flip">
               <div class="front"></div>
               <div class="back">
@@ -75,7 +76,7 @@
               </div>
             </div>
           </label>
-          <span class="txt__form">Запомнить</span>
+          
         </div>
         <button type="submit" class="btn form__button">Войти</button>
       </form>
@@ -147,16 +148,17 @@ export default {
         this.$v.$touch();
         return;
       }
-      const getUser = {
+      const fromdata = {
         name: this.name,
         password: this.password,
         checked: this.checked,
-        isSignIn: true
+        // isSignIn: true
       };
 
       try {
-        await this.$store.dispatch("user/setUser", getUser);
-        localStorage.setItem("user", JSON.stringify(getUser));
+        await this.$store.dispatch("user/setUser", fromdata);
+        localStorage.setItem("user", JSON.stringify(fromdata));
+        console.log('getFromData');
         // if (localStorage.getItem("checked") === "true") {
         //   const saved = localStorage.getItem("user");
         //   const initialValue = JSON.parse(saved);
@@ -262,8 +264,6 @@ export default {
     }
     .front {
       background: $backgroundColor;
-      z-index: 66;
-      top: 2px;
     }
     .back {
       transform: rotateY(180deg);
@@ -282,7 +282,8 @@ export default {
       font-size: 19px;
       text-align: left;
       align-items: center;
-      margin-left: 12px;
+      left: 28px;
+      position: absolute;
     }
   }
 

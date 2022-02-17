@@ -57,4 +57,11 @@ export default {
   &__card {
   }
 }
+
+@media (max-width: 767px) {
+  
+  .default-tabs__item {
+    font-size: 20px;
+  }
+}
 </style>
