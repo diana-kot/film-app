@@ -216,6 +216,7 @@ export default {
       max-width: 113px;
       margin-top: 130px;
       margin-left: 25%;
+      font-weight: 600;
     }
 
     // Чекбокс............................
@@ -227,8 +228,8 @@ export default {
     }
     .cbx {
       position: absolute;
-      top: 55%;
-      left: 0%;
+      top: 14px;
+      left: 0px;
       margin: -12px;
       border: 1px solid $colorDark;
       background-color: $backgroundColor;
@@ -284,7 +285,9 @@ export default {
       align-items: center;
       left: 28px;
       position: absolute;
+      // top: 10px;
     }
+  
   }
 
   /* ---------------------------------- */

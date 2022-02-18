@@ -1,8 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap");
-
-
-
-
+//@import url('https://../fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap');
+@font-face {
+	font-family: 'Rubik';
+	src: url('/fonts/Rubik-Black.eot');
+	src: local('☺'), url('/fonts/Rubik-Black.woff') format('woff'), url('/fonts/Rubik-Black.ttf') format('truetype'), url('/fonts/Rubik-Black.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Rubik Medium';
+	src: url('/fonts/Rubik-Medium.eot');
+	src: local('☺'), url('/fonts/Rubik-Medium.woff') format('woff'), url('/fonts/Rubik-Medium.ttf') format('truetype'), url('/fonts/Rubik-Medium.svg') format('svg');
+	font-weight: 500;
+	font-style: normal;
+}
 
 
 .wrapper {
@@ -22,7 +32,7 @@ body {
   line-height: 1;
   background: $backgroundColor;
   font-size: 20px;
-  font-family: "Rubik";
+  font-family: 'Rubik';
   font-weight: 400;
   color: $colorDark;
 }
@@ -59,6 +69,5 @@ body {
 
 
 @import "./vars.scss";
-@import "./mob1023.scss";
-@import "./mob767.scss";
+
 

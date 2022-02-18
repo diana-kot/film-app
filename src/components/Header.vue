@@ -1,6 +1,6 @@
 <template>
-  <header class="header _container">
-    <div class="header__container">
+  <header class="header">
+    <div class="header__container _container">
       <div class="header__left left">
         <router-link :to="{ name: 'home' }" class="left__link">
           <div class="left__logo">
@@ -10,25 +10,18 @@
         </router-link>
       </div>
       <div class="header__middle middle">
-        <form
-          action="#"
-          method="get"
-          class="middle__form"
-          :class="{ active: isActive }"
-        >
-          <input
-            placeholder="Поиск..."
-            type="search"
-            class="middle__input"
-            v-model="userSearch"
-          />
+        <form action="#" method="get" class="middle__form">
+          <input placeholder="Поиск..." type="search" class="middle__input" />
           <button type="submit" class="middle__btn">Найти</button>
         </form>
       </div>
       <div class="wrapper__name">
+        <!-- <div class="user__name" v-show="isAuthorized">
+          <p>{{ getUser ? this.name : "" }}</p>
+        </div> -->
         <div class="user__name" v-show="isAuthorized">
           <input
-            class="input__name"
+            class="user__input"
             :value="name"
             type="text"
             @input="onChangeName($event)"
@@ -36,8 +29,13 @@
         </div>
 
         <div class="header__right right" @click="onAuthBtnClick">
-          <a href="#" :class="classes" class="right__btn btn">
-            {{ isAuthorized ? "Выйти" : "Вход" }}
+          <a
+            href="#"
+            :class="className"
+            class="right__btn btn"
+            v-if="getUser ? this.success : this.unsuccess"
+          >
+            {{ getUser ? "Выйти" : "Вход" }}
           </a>
         </div>
       </div>
@@ -55,116 +53,74 @@ export default {
   components: { AuthModal },
   data() {
     return {
-      isActive: false,
-      userSearch: "",
       isAuthorized: false,
       isAuthModalOpen: false,
-      // isSignIn:false,
-      classes: {
-        success: false,
-        right__btn: false,
+      success: {
+        type: Boolean,
+        default: true,
+      },
+      unsuccess: {
+        type: Boolean,
+        default: false,
       },
     };
   },
   computed: {
-    
     ...mapGetters({ getUser: "user/getUser" }),
     name() {
-      // this.isAuthorized = localStorage.getItem("isAuthorized");
-      // localStorage.getItem("isAuthorized", JSON.stringify(this.isAuthorized)),
-      localStorage.getItem("user", JSON.stringify(this.getUser));
-      console.log("computed");
+      localStorage.setItem("userNew", JSON.stringify(this.getUser));
       return this.getUser ? this.getUser.name : "";
+    },
+
+    className() {
+      return this.getUser ? "success" : "unsuccess";
     },
   },
   created() {
-
-    this.isAuthorized = localStorage.getItem("isAuthorized");
-    // this.isAuthorized(localStorage.getItem("isAuthorized"));
-    console.log('isAuthorized', this.isAuthorized);
-
-    this.setUser(JSON.parse(localStorage.getItem("user")));
+    this.setUser(JSON.parse(localStorage.getItem("userNew")));
     this.getUser();
-    console.log('reload', this.getUser)
-
   },
-
   mounted() {
-    console.log(this.isAuthorized);
-    console.log(this.isAuthorized ? "Выйти" : "Вход" );
-    console.log(this.isAuthorized);
-    if (this.getUser && this.isAuthorized) 
-    {    
-      console.log("user в системе");
-      this.classes.success = "true";
-      this.classes.right__btn = "false";
-      // this.classes.user_name
-      // this.isAuthorized = true;
+    if (this.getUser) {
+      console.log("user есть");
+      this.isAuthorized = "true";
     } else {
-      // this.isAuthorized = "false";
-      this.classes.right__btn = "true";
-      this.classes.success = "false";
-      console.log("user вышел");
+      console.log("user нет");
     }
 
-    // const strName = localStorage.getItem("user");
-    // const parsName = JSON.parse(strName);
-    // this.getUser.name = parsName.name;
+    const strName = localStorage.getItem("userNew");
+    const parsName = JSON.parse(strName);
+    this.getUser.name = parsName.name;
   },
 
   methods: {
     ...mapActions({
       setUser: "user/setUser",
-      // setSignIn: "user/setSignIn",
       deleteUser: "user/deleteUser",
-      updateUser: "user/updateUser",
     }),
     onAuthBtnClick() {
-     if (this.getUser) {
-        this.classes.success = "true";
-        this.classes.right__btn = "false";
-        this.deleteUser();
+      if (this.getUser) {
         this.isAuthorized = false;
-        localStorage.setItem("isAuthorized", this.isAuthorized);
-        // this.isSignIn = false;
-        // localStorage.removeItem("userNew");
-        // this.isAuthModalOpen = "false";
-        console.log('выход')
-      } else {
-        this.classes.success = "false";
-        this.classes.right__btn = "true";
-        this.isAuthModalOpen = "true";
-        // this.isAuthorized = true;
-        localStorage.getItem("user", JSON.stringify(this.setUser));
-        // this.showUser();
-        console.log('вход')
-      }
-      // console.log('Зашли сюда', this.getSignIn)
-      // console.log('Зашли сюда', this.setSignIn)
 
-      // localStorage.setItem("isAuthorized", this.isAuthorized);
+        this.deleteUser();
+        localStorage.removeItem("userNew");
+      } else {
+        this.isAuthModalOpen = true;
+      }
     },
     onChangeName(event) {
       this.getUser.name = event.target.value;
     },
 
-    // showUser() {
-    //   if(this.isAuthModalOpen == "true")
-    //     this.isAuthorized = "false";
-    // },
-
     closeModal() {
       this.isAuthModalOpen = false;
       this.isAuthorized = true;
-      localStorage.setItem("isAuthorized", this.isAuthorized);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/mob1023.scss";
-@import "../scss/mob1023.scss";
 @import "../scss/vars.scss";
 @import "../scss/style.scss";
 
@@ -172,17 +128,18 @@ export default {
   background-color: $backgroundColor;
   color: $colorBtn;
   padding: 0;
-
+  font-weight: 500;
+  line-height: 19px;
   &:hover {
-    color: $backgroundColor;
+    background-color: $backgroundColor;
   }
 }
-.un_success {
+.unsuccess {
   background-color: $colorBtn;
-  color: $colorBtn;
-  padding: 2px;
+  color: $backgroundColor;
+  padding: 0px 37px;
   &:hover {
-    color: $colorBtnHover;
+    background-color: $colorBtnHover;
   }
 }
 
@@ -231,7 +188,7 @@ export default {
     font-size: 20px;
     line-height: 24px;
     color: $colorDark;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   //.left__link
@@ -328,15 +285,15 @@ input:focus:-ms-input-placeholder {
   transition: opacity 0.3s ease;
 }
 
-.user__name {
+.user__input {
+  display: flex;
   font-size: 16px;
   width: 114px;
-  // top: 19px;
-  font-weight: 500;
-  // position: absolute;
-  // right: 196px;
-  // top: 10px;
-  border: 1px solid grey;
+  height: 19px;
+  padding-right: 4px;
+  padding-left: 4px;
+  color: $colorDark;
+  font-weight: 600;
   margin-right: 16px;
 }
 
@@ -346,87 +303,31 @@ input:focus:-ms-input-placeholder {
   position: relative;
 }
 
-.input__name {
-  width: 114px;
-  display: flex;
-}
-
-.user {
-  font-size: 16px;
-  width: 114px;
-  top: 19px;
-  font-weight: 500;
-  color: aqua;
-  border: 1px solid red;
-}
-
 @media (max-width: 1023px) {
   ._container {
     padding-left: calc(50% - #{$widthSiteSml / 2});
     padding-right: calc(50% - #{$widthSiteSml / 2});
   }
-
   .middle__input {
     width: 220px;
   }
-
   .middle__form {
     justify-content: start;
     gap: 12px;
   }
-
   .header__left {
     margin-right: 20px;
   }
-
   .wrapper__name {
     flex-flow: column-reverse;
+    align-items: flex-end;
   }
-
-  // .header__middle {
-  //   width: 10px;
-  // }
-
-  // .middle__input {
-  //   width: 200px;
-  // }
-  // .header__left {
-  //   margin-right: 160px;
-  // }
-
+  .user__input {
+    margin-right: 0px;
+  }
   .header__container {
     justify-content: start;
   }
-
-  // .middle__form {
-  //   width: 0px;
-  //   position: relative;
-  // }
-
-  // .middle__input {
-  //   border-bottom: none;
-  //   width: 0px;
-  //   padding: 0px;
-  //   transition: all 0.3s ease;
-  // }
-
-  // .active {
-  //   width: 320px;
-  //   padding-left: 10px;
-  //   padding-right: 10px;
-  //   border-bottom: 1px solid #333333;
-  //   outline: none;
-  //   color: $colorDark;
-  //   font-size: 16px;
-  //   line-height: 19/16 * 100%;
-  //   font-weight: 600;
-  //   transition: 0.4s;
-  // }
-
-  // .middle__btn {
-  //   position: absolute;
-  //   left: 45px;
-  // }
 }
 
 @media (max-width: 767px) {
@@ -434,33 +335,43 @@ input:focus:-ms-input-placeholder {
     padding-left: 16px;
     padding-right: 16px;
   }
-
   .header__middle {
     width: 9px;
   }
-
   .middle__form {
     width: 0px;
   }
-
   .middle__input {
     width: 100px;
+  }
+  .header__container {
+    justify-content: space-between;
+  }
+
+  .header__middle {
+    position: absolute;
+    top: 14%;
+    left: 20%;
   }
 }
 
 @media (max-width: 425px) {
-  .header__middle {
-    position: absolute;
-    top: 12%;
-    left: 20%;
-  }
-
   .middle__form {
     width: 0px;
   }
-
   .middle__input {
-    width: 200px;
+    width: 150px;
+  }
+  .wrapper__name {
+    align-items: center;
+  }
+
+  .user__input {
+    width: 100px;
+  }
+
+  .unsuccess {
+    padding: 0px 24px;
   }
 }
 </style>

@@ -38,7 +38,6 @@ export default {
 <style lang="scss">
 @import "../scss/vars.scss";
 @import "../scss/style.scss";
-@import "../scss/mob1023.scss";
-@import "../scss/mob1023.scss";
+
 
 </style>

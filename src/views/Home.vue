@@ -135,7 +135,7 @@ export default {
 
 @media (max-width: 425px) {
   .default-tabs {
-    margin-top: 28px;
+    margin-top: 60px;
   }
 }
 </style>
