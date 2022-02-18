@@ -37,7 +37,7 @@
 
         <div class="header__right right" @click="onAuthBtnClick">
           <a href="#" :class="classes" class="right__btn btn">
-            {{ getUser ? "Выйти" : "Вход" }}
+            {{ isAuthorized ? "Выйти" : "Вход" }}
           </a>
         </div>
       </div>
@@ -59,6 +59,7 @@ export default {
       userSearch: "",
       isAuthorized: false,
       isAuthModalOpen: false,
+      // isSignIn:false,
       classes: {
         success: false,
         right__btn: false,
@@ -66,30 +67,44 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ getUser: "user/getUser", getSignIn: "user/getSignIn" }),
+    
+    ...mapGetters({ getUser: "user/getUser" }),
     name() {
+      // this.isAuthorized = localStorage.getItem("isAuthorized");
+      // localStorage.getItem("isAuthorized", JSON.stringify(this.isAuthorized)),
       localStorage.getItem("user", JSON.stringify(this.getUser));
       console.log("computed");
       return this.getUser ? this.getUser.name : "";
     },
   },
   created() {
-    // this.setSign(JSON.parse(localStorage.getItem("signIn")));
-    this.getSign();
+
+    this.isAuthorized = localStorage.getItem("isAuthorized");
+    // this.isAuthorized(localStorage.getItem("isAuthorized"));
+    console.log('isAuthorized', this.isAuthorized);
+
     this.setUser(JSON.parse(localStorage.getItem("user")));
     this.getUser();
+    console.log('reload', this.getUser)
+
   },
 
   mounted() {
-    if (this.getUser && this.getSignIn) {
-      console.log("user есть");
+    console.log(this.isAuthorized);
+    console.log(this.isAuthorized ? "Выйти" : "Вход" );
+    console.log(this.isAuthorized);
+    if (this.getUser && this.isAuthorized) 
+    {    
+      console.log("user в системе");
       this.classes.success = "true";
-      this.isAuthorized = "false";
+      this.classes.right__btn = "false";
+      // this.classes.user_name
+      // this.isAuthorized = true;
     } else {
-      this.isAuthorized = "true";
+      // this.isAuthorized = "false";
       this.classes.right__btn = "true";
       this.classes.success = "false";
-      console.log("user нет");
+      console.log("user вышел");
     }
 
     // const strName = localStorage.getItem("user");
@@ -100,29 +115,34 @@ export default {
   methods: {
     ...mapActions({
       setUser: "user/setUser",
-      setSign: "user/setSign",
+      // setSignIn: "user/setSignIn",
       deleteUser: "user/deleteUser",
       updateUser: "user/updateUser",
     }),
     onAuthBtnClick() {
-      if (this.getUser) {
+     if (this.getUser) {
         this.classes.success = "true";
         this.classes.right__btn = "false";
         this.deleteUser();
         this.isAuthorized = false;
-        this.getSignIn = false;
-
+        localStorage.setItem("isAuthorized", this.isAuthorized);
+        // this.isSignIn = false;
         // localStorage.removeItem("userNew");
-
         // this.isAuthModalOpen = "false";
+        console.log('выход')
       } else {
         this.classes.success = "false";
+        this.classes.right__btn = "true";
         this.isAuthModalOpen = "true";
-        this.getSignIn = true;
+        // this.isAuthorized = true;
         localStorage.getItem("user", JSON.stringify(this.setUser));
         // this.showUser();
+        console.log('вход')
       }
-      localStorage.setItem("signIn", JSON.stringify(this.setSign));
+      // console.log('Зашли сюда', this.getSignIn)
+      // console.log('Зашли сюда', this.setSignIn)
+
+      // localStorage.setItem("isAuthorized", this.isAuthorized);
     },
     onChangeName(event) {
       this.getUser.name = event.target.value;
@@ -136,6 +156,7 @@ export default {
     closeModal() {
       this.isAuthModalOpen = false;
       this.isAuthorized = true;
+      localStorage.setItem("isAuthorized", this.isAuthorized);
     },
   },
 };
