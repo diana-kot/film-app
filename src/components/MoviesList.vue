@@ -48,18 +48,10 @@ export default {
     row-gap: $gapGrid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     margin-bottom: 32px;
-
-  }
-}
-.movie {
-  // .movie__card
-
-  &__card {
   }
 }
 
 @media (max-width: 767px) {
-  
   .default-tabs__item {
     font-size: 20px;
   }

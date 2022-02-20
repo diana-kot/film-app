@@ -5,14 +5,9 @@ import store from './store'
 import Vuelidate from 'vuelidate'
 import VModal from 'vue-js-modal'
 
-
-
 Vue.use(Vuelidate)
 Vue.use(VModal)
-
-
-
-Vue.config.productionTip = false
+Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false } })
 
 new Vue({
   router,

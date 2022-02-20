@@ -41,7 +41,6 @@ export default {
 }
 .genres {
   // .genres__items
-  
 
   &__items {
     display: grid;
@@ -49,13 +48,8 @@ export default {
     row-gap: $gapGrid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     margin-bottom: 72px;
+    justify-items: center;
 
-  }
-}
-.genre {
-  // .genre__card
-
-  &__card {
   }
 }
 </style>

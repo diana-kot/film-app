@@ -38,11 +38,6 @@ export default {
     align-items: center;
   }
 
-  // .footer__left
-
-  &__left {
-  }
-
   // .footer__right
 
   &__right {
@@ -65,9 +60,9 @@ export default {
   }
 
   @media (max-width: 767px) {
-  .footer__right {
-    font-size: 14px;
+    .footer__right {
+      font-size: 14px;
+    }
   }
-}
 }
 </style>

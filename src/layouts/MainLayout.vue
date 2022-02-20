@@ -2,7 +2,6 @@
   <div class="wrapper wrapper__container">
     <Header @click="showModalAuth" />
     <auth-modal v-if="isAuthModalOpen" @close="isAuthModalOpen = false" />
-
     <main class="main">
       <div class="app-page">
         <router-view />
@@ -38,6 +37,4 @@ export default {
 <style lang="scss">
 @import "../scss/vars.scss";
 @import "../scss/style.scss";
-
-
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
     <table class="iksweb">
-      <vue-scrollbar classes="my-scrollbar" ref="Scrollbar">
-        <div class="scroll-me">
+      <vue-scrollbar classes="my__scrollbar" ref="Scrollbar">
+        <div class="scroll__me">
           <tbody class="channel__items">
             <tr class="channel__item" v-for="obj in objects" :key="obj.id">
               <td class="channel__td">
@@ -10,7 +10,7 @@
                   <img :src="obj.img" :alt="obj.id" class="channel-img" />
                 </div>
               </td>
-              <td class="channel__txt inner">
+              <td class="channel__txt">
                 <table class="table">
                   <tbody>
                     <tr
@@ -38,8 +38,6 @@
 
 <script>
 import VueScrollbar from "vue2-scrollbar";
-// It's required to set min height of the scrollbar wrapper
-// require("./your/custom/style/app.css");
 
 export default {
   name: "ChannelsDisplay",
@@ -61,14 +59,14 @@ export default {
 @import "../scss/vue2-scrollbar.scss";
 
 /*The Wrapper*/
-.my-scrollbar {
+.my__scrollbar {
   max-height: 700px;
   width: 100%;
   min-width: $maxWidth;
 }
 
 /*The Content*/
-.scroll-me {
+.scroll__me {
   min-height: 700px;
   width: 100%;
   min-width: $maxWidth;
@@ -93,6 +91,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 table.iksweb {
   width: 100%;
   border-spacing: 0;
@@ -101,7 +100,7 @@ table.iksweb {
   margin-bottom: 56px;
 }
 
-table > tbody > tr > td.inner {
+.inner {
   padding: 6px;
   margin-left: 16px;
 }
@@ -126,6 +125,7 @@ tr.channel__red:nth-child(1) {
   position: relative;
   padding: 0px 400px 0px 0px;
 }
+
 .channel__item {
   display: flex;
   margin-bottom: 16px;
@@ -142,28 +142,29 @@ tr.channel__red:nth-child(1) {
   left: 50%;
   object-fit: cover;
   transform: translateX(-50%);
-  //  border: 1px solid;
 }
 
 .channel__txt {
   font-size: 16px;
   line-height: 19px;
   text-align: left;
-  //  border: 1px solid;
 }
+
 table.table {
   display: flex;
   flex-direction: column;
 }
 
 @media (max-width: 1023px) {
-  .scroll-me {
+  .scroll__me {
     min-width: $maxWidthChannel/1.65;
   }
+
   .channel__item {
     width: $maxWidthChannel/1.65;
   }
-  .my-scrollbar {
+
+  .my__scrollbar {
     min-width: 0px;
   }
 }
@@ -191,37 +192,43 @@ table.table {
     margin-left: 0px;
   }
 
-  .scroll-me {
+  .scroll__me {
     min-width: $maxWidthChannel/3.2;
   }
+
   .channel__item {
     width: $maxWidthChannel/3.2;
   }
-  .my-scrollbar {
+
+  .my__scrollbar {
     min-width: 0px;
   }
 }
 
 @media (max-width: 375px) {
-  .scroll-me {
+  .scroll__me {
     min-width: $maxWidthChannel/3.6;
   }
+
   .channel__item {
     width: $maxWidthChannel/3.6;
   }
-  .my-scrollbar {
+
+  .my__scrollbar {
     min-width: 0px;
   }
 }
 
 @media (max-width: 320px) {
-  .scroll-me {
+  .scroll__me {
     min-width: $maxWidthChannel/4.3;
   }
+
   .channel__item {
     width: $maxWidthChannel/4.3;
   }
-  .my-scrollbar {
+
+  .my__scrollbar {
     min-width: 0px;
   }
 }

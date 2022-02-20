@@ -1,9 +1,8 @@
 <template>
   <div>
     <transition name="fade" appear>
-      <div class="modal-overlay"></div>
+      <div class="modal__overlay"></div>
     </transition>
-
     <modal
       name="auth-modal"
       classes="auth-modal"
@@ -11,7 +10,7 @@
       width="304px"
       :resizable="true"
       :adaptive="true"
-      :clickToClose="false"
+      :clickToClose="true"
       :overlay-fade="false"
     >
       <form @submit.prevent="submitHandler">
@@ -46,7 +45,6 @@
                 ($v.password.$dirty && !$v.password.minLength),
             }"
           />
-
           <small
             class="helper-text invalid"
             v-if="$v.password.$dirty && !$v.password.required"
@@ -62,7 +60,6 @@
             {{ password.length }}
           </small>
         </div>
-
         <div class="check">
           <input id="cbx1" type="checkbox" v-model="checked" />
           <label for="cbx1" class="cbx">
@@ -76,7 +73,6 @@
               </div>
             </div>
           </label>
-          
         </div>
         <button type="submit" class="btn form__button">Войти</button>
       </form>
@@ -113,36 +109,9 @@ export default {
     }
   },
 
-  // computed: {
-  //   ...mapGetters({ getUser: "user/getUser" }),
-
-  //   userFromState() {
-  //     return this.getUser;
-  //   },
-  //   // isSignInForm() {
-  //   //   return this.mode === "signIn";
-  //   // },
-  // },
-
   methods: {
     ...mapActions(["user/setUser"]),
 
-    //  changeUserState() {
-    //   if (this.auth) {
-    //     localStorage.removeItem('auth')
-    //     this.$router.push({ name: 'main'})
-    //   } else {
-    //     localStorage.setItem('auth', true)
-    //     this.auth = true
-    //   }
-    // },
-    // close() {
-    //   console.log('Colose modal');
-    //   this.$emit("close");
-    // },
-    // showUser(){
-    //   this.$emit("showUser");
-    // },
     async submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch();
@@ -158,12 +127,6 @@ export default {
       try {
         await this.$store.dispatch("user/setUser", fromdata);
         localStorage.setItem("user", JSON.stringify(fromdata));
-        console.log('getFromData');
-        // if (localStorage.getItem("checked") === "true") {
-        //   const saved = localStorage.getItem("user");
-        //   const initialValue = JSON.parse(saved);
-        //   return initialValue || "";
-        // }
         this.$emit("close");
       } catch (e) {
         console.log(e);
@@ -206,12 +169,14 @@ export default {
       top: 50%;
       left: 0;
     }
+
     .card-title {
       font-weight: 500;
       font-size: 28px;
       margin-bottom: 23px;
       text-align: center;
     }
+
     .form__button {
       max-width: 113px;
       margin-top: 130px;
@@ -226,6 +191,7 @@ export default {
       position: relative;
       margin-left: 13px;
     }
+
     .cbx {
       position: absolute;
       top: 14px;
@@ -238,6 +204,7 @@ export default {
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     .flip {
       display: block;
       transition: all 0.4s ease;
@@ -246,6 +213,7 @@ export default {
       width: 16px;
       height: 16px;
     }
+
     input[type="checkbox"] {
       display: none;
     }
@@ -253,6 +221,7 @@ export default {
     input[type="checkbox"]:checked + .cbx .flip {
       transform: rotateY(180deg);
     }
+
     .front,
     .back {
       backface-visibility: hidden;
@@ -263,58 +232,45 @@ export default {
       height: 16px;
       border-radius: 4px;
     }
+
     .front {
       background: $backgroundColor;
     }
+
     .back {
       transform: rotateY(180deg);
       background: $backgroundColor;
       text-align: center;
     }
+
     .back svg {
       margin-bottom: 5px;
       fill: none;
       width: 10px;
     }
+
     .back svg path {
       stroke: $colorBtnHover;
     }
+
     .txt__form {
       font-size: 19px;
       text-align: left;
       align-items: center;
       left: 28px;
       position: absolute;
-      // top: 10px;
     }
-  
   }
 
-  /* ---------------------------------- */
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.4s linear;
-  }
-
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-    z-index: 0;
-  }
-
-  .pop-enter-active,
-  .pop-leave-active {
-    transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
-  }
-  .modal-overlay {
+  .modal__overlay {
     content: "";
     position: absolute;
-    position: fixed;
+    // position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 998;
+    // z-index: 998;
     background: $colorDark;
     opacity: 0, 6;
     cursor: pointer;

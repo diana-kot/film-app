@@ -16,9 +16,6 @@
         </form>
       </div>
       <div class="wrapper__name">
-        <!-- <div class="user__name" v-show="isAuthorized">
-          <p>{{ getUser ? this.name : "" }}</p>
-        </div> -->
         <div class="user__name" v-show="isAuthorized">
           <input
             class="user__input"
@@ -27,7 +24,6 @@
             @input="onChangeName($event)"
           />
         </div>
-
         <div class="header__right right" @click="onAuthBtnClick">
           <a
             href="#"
@@ -82,12 +78,8 @@ export default {
   },
   mounted() {
     if (this.getUser) {
-      console.log("user есть");
       this.isAuthorized = "true";
-    } else {
-      console.log("user нет");
     }
-
     const strName = localStorage.getItem("userNew");
     const parsName = JSON.parse(strName);
     this.getUser.name = parsName.name;
@@ -101,7 +93,6 @@ export default {
     onAuthBtnClick() {
       if (this.getUser) {
         this.isAuthorized = false;
-
         this.deleteUser();
         localStorage.removeItem("userNew");
       } else {
@@ -111,7 +102,6 @@ export default {
     onChangeName(event) {
       this.getUser.name = event.target.value;
     },
-
     closeModal() {
       this.isAuthModalOpen = false;
       this.isAuthorized = true;
@@ -142,7 +132,6 @@ export default {
     background-color: $colorBtnHover;
   }
 }
-
 .header {
   margin-bottom: 42px;
   padding-top: 34px;
@@ -169,19 +158,8 @@ export default {
   &__middle {
     width: 402px;
   }
-
-  // .header__right
-
-  &__right {
-  }
 }
-
 .left {
-  // .left__logo
-
-  &__logo {
-  }
-
   // .left__txt
 
   &__txt {
@@ -226,13 +204,15 @@ export default {
     line-height: 19/16 * 100%;
     font-weight: 600;
     transition: 0.4s;
-
     &:focus {
       outline: 0;
       background: transparent;
       ::placeholder {
         opacity: 0;
       }
+    }
+    &::placeholder {
+      font-weight: 400;
     }
   }
 
@@ -252,39 +232,10 @@ export default {
   }
 }
 
-input::-webkit-input-placeholder {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-input::-moz-placeholder {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-input:-moz-placeholder {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-input:-ms-input-placeholder {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
 input:focus::-webkit-input-placeholder {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-input:focus::-moz-placeholder {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-input:focus:-moz-placeholder {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-input:focus:-ms-input-placeholder {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
 .user__input {
   display: flex;
   font-size: 16px;
@@ -295,8 +246,10 @@ input:focus:-ms-input-placeholder {
   color: $colorDark;
   font-weight: 600;
   margin-right: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
 .wrapper__name {
   display: flex;
   align-items: center;
@@ -347,7 +300,6 @@ input:focus:-ms-input-placeholder {
   .header__container {
     justify-content: space-between;
   }
-
   .header__middle {
     position: absolute;
     top: 14%;
@@ -365,11 +317,9 @@ input:focus:-ms-input-placeholder {
   .wrapper__name {
     align-items: center;
   }
-
   .user__input {
     width: 100px;
   }
-
   .unsuccess {
     padding: 0px 24px;
   }

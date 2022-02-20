@@ -1,8 +1,8 @@
 <template>
   <div class="films-page _container">
-    <p class="films__title title-large">Новинки</p>
+    <h1 class="films__title title-large">Новинки</h1>
     <MoviesList :movies="movies" />
-    <p class="films__titleToo title-large">Жанры</p>
+    <h1 class="films__titleToo title-large">Жанры</h1>
     <GenresList :genres="genres"/>
   </div>
 </template>

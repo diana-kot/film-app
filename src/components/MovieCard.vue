@@ -1,16 +1,18 @@
 <template>
   <div class="movies__item item">
-    <a href="#" class="movies__image">
+    <a href="#">
+        <div class="movies__image">
       <img :src="movie.img" :alt="movie.title" class="item-img" />
-    </a>
+    </div>
     <div class="item__txt">
       <p class="item__title">{{ movie.title }}</p>
       <div class="item__desc desc">
-        <a href="#" class="desk__link">
+        <div class="desk__link">
           <p class="desk__txt">{{ movie.description }}</p>
-        </a>
+        </div>
       </div>
     </div>
+    </a>
   </div>
 </template>
 
@@ -67,11 +69,6 @@ export default {
   border-radius: 8px;
 }
 .item {
-  // .item__txt
-
-  &__txt {
-  }
-
   // .item__title
 
   &__title {
@@ -91,11 +88,6 @@ export default {
   }
 }
 .desk {
-  // .desk__link
-
-  &__link {
-  }
-
   // .desk__txt
 
   &__txt {
