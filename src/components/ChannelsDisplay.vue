@@ -188,22 +188,37 @@ table.table {
     flex-direction: column;
   }
 
-  table > tbody > tr > td.inner > div {
+  td.inner > div {
     margin-left: 0px;
   }
 
   .scroll__me {
-    min-width: $maxWidthChannel/3.2;
+    // min-width: $maxWidthChannel/3.2;
+    display: flex;
+    flex-direction: column;
   }
 
   .channel__item {
-    width: $maxWidthChannel/3.2;
+    // width: $maxWidthChannel/1.9;
+    display: flex;
+    flex-direction: column;
   }
 
   .my__scrollbar {
     min-width: 0px;
   }
 }
+
+@media (max-width: 425px) {
+  .scroll__me {
+    min-width: $maxWidthChannel/3.4;
+  }
+
+  .channel__item {
+    width: $maxWidthChannel/3.2;
+  }
+}
+
 
 @media (max-width: 375px) {
   .scroll__me {

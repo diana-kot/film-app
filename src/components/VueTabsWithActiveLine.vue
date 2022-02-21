@@ -150,6 +150,9 @@ export default {
   .default-tabs__item {
     font-size: 20px;
   }
+  .default-tabs {
+    margin-top: 60px;
+  }
 }
 
 @media (max-width: 425px) {

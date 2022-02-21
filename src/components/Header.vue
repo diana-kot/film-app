@@ -128,6 +128,7 @@ export default {
   background-color: $colorBtn;
   color: $backgroundColor;
   padding: 0px 37px;
+  margin-left: 70px;
   &:hover {
     background-color: $colorBtnHover;
   }
@@ -140,9 +141,8 @@ export default {
 
   &__container {
     display: flex;
-    min-height: 40px;
+    height: 40px;
     align-items: center;
-    justify-content: space-between;
   }
 
   // .header__left
@@ -150,7 +150,7 @@ export default {
   &__left {
     display: flex;
     align-items: center;
-    gap: 208px;
+    margin-right: 208px;
   }
 
   // .header__middle
@@ -177,6 +177,7 @@ export default {
   }
 }
 .middle {
+  margin-right: 207px;
   // .middle__form
 
   &__form {
@@ -264,9 +265,8 @@ input:focus::-webkit-input-placeholder {
   .middle__input {
     width: 220px;
   }
-  .middle__form {
-    justify-content: start;
-    gap: 12px;
+  .middle {
+    margin-right: 20px;
   }
   .header__left {
     margin-right: 20px;
@@ -277,9 +277,10 @@ input:focus::-webkit-input-placeholder {
   }
   .user__input {
     margin-right: 0px;
+    font-size: 14px;
   }
-  .header__container {
-    justify-content: start;
+   .unsuccess {
+    margin-left: 0px;
   }
 }
 
@@ -292,17 +293,14 @@ input:focus::-webkit-input-placeholder {
     width: 9px;
   }
   .middle__form {
-    width: 0px;
-  }
-  .middle__input {
-    width: 100px;
+    justify-content: flex-start;
   }
   .header__container {
     justify-content: space-between;
   }
   .header__middle {
     position: absolute;
-    top: 14%;
+    top: 100px;
     left: 20%;
   }
 }
@@ -314,14 +312,14 @@ input:focus::-webkit-input-placeholder {
   .middle__input {
     width: 150px;
   }
-  .wrapper__name {
-    align-items: center;
-  }
   .user__input {
     width: 100px;
   }
   .unsuccess {
     padding: 0px 24px;
+  }
+  .wrapper__name{
+    align-items: center;
   }
 }
 </style>

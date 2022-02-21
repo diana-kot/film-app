@@ -1,8 +1,5 @@
 <template>
   <div>
-    <transition name="fade" appear>
-      <div class="modal__overlay"></div>
-    </transition>
     <modal
       name="auth-modal"
       classes="auth-modal"
@@ -10,8 +7,7 @@
       width="304px"
       :resizable="true"
       :adaptive="true"
-      :clickToClose="true"
-      :overlay-fade="false"
+      :clickToClose="false"
     >
       <form @submit.prevent="submitHandler">
         <span class="card-title">Вход</span>
@@ -121,7 +117,6 @@ export default {
         name: this.name,
         password: this.password,
         checked: this.checked,
-        // isSignIn: true
       };
 
       try {
@@ -260,20 +255,6 @@ export default {
       left: 28px;
       position: absolute;
     }
-  }
-
-  .modal__overlay {
-    content: "";
-    position: absolute;
-    // position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    // z-index: 998;
-    background: $colorDark;
-    opacity: 0, 6;
-    cursor: pointer;
   }
 }
 </style>
